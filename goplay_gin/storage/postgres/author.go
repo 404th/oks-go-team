@@ -1,8 +1,6 @@
 package postgres
 
 import (
-	"context"
-
 	"github.com/404th/goplay_gin/model"
 	"github.com/jmoiron/sqlx"
 )
@@ -17,7 +15,7 @@ func NewAuthorRepo(db *sqlx.DB) *authorRepo {
 	}
 }
 
-func (rp authorRepo) CreateAuthor(ctx context.Context, id, firstname, secondname string) (string, error) {
+func (rp authorRepo) CreateAuthor(id, firstname, secondname string) (string, error) {
 	var (
 		created_id string
 	)
@@ -51,16 +49,14 @@ func (rp authorRepo) GetAuthor(id string) (*model.Author, error) {
 	return &author, nil
 }
 
-func (rp authorRepo) GetAllAuthor(ctx context.Context, offset, limit, search string) (*[]model.Author, error) {
+func (rp authorRepo) GetAllAuthor(offset, limit, search string) (*[]model.Author, error) {
 	return nil, nil
 }
 
-// sdsds
-
-func (rp authorRepo) UpdateAuthor(ctx context.Context, id string, entity model.UpdateAuthor) error {
+func (rp authorRepo) UpdateAuthor(id string, entity model.UpdateAuthor) error {
 	return nil
 }
 
-func (rp authorRepo) DeleteAuthor(ctx context.Context, id string) error {
+func (rp authorRepo) DeleteAuthor(id string) error {
 	return nil
 }

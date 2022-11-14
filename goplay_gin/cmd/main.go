@@ -39,12 +39,12 @@ func main() {
 	docs.SwaggerInfo.Title = "Book Store API"
 	docs.SwaggerInfo.Description = "Book Store"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = cfg.HOST
-	docs.SwaggerInfo.BasePath = fmt.Sprintf(":%s/api", cfg.PORT)
+	docs.SwaggerInfo.Host = cfg.PROJECT_HOST
+	docs.SwaggerInfo.BasePath = fmt.Sprintf(":%s/api", cfg.PROJECT_PORT)
 	docs.SwaggerInfo.Schemes = []string{"http", "https"}
 
 	str := fmt.Sprintf("port=%s host=%s user=%s dbname=%s password=%s sslmode=%s",
-		cfg.PGPORT, cfg.PGHOST, cfg.PGUSER, cfg.PGDATABASE, cfg.PGPASSWORD, cfg.PGSSLMODE,
+		cfg.POSTGRES_PORT, cfg.POSTGRES_HOST, cfg.POSTGRES_USER, cfg.POSTGRES_DB, cfg.POSTGRES_PASSWORD, cfg.PGSSLMODE,
 	)
 
 	// connect db
@@ -74,5 +74,5 @@ func main() {
 	// DeleteBook
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	r.Run(fmt.Sprintf(":%s", cfg.PORT))
+	r.Run(fmt.Sprintf(":%s", cfg.PROJECT_PORT))
 }

@@ -38,7 +38,7 @@ func (h Handler) CreateAuthor(ctx *gin.Context) {
 	id := uuid.NewString()
 	author.ID = id
 
-	resp, err := h.strg.Author().CreateAuthor(ctx, author.ID, author.Firstname, author.Secondname)
+	resp, err := h.strg.Author().CreateAuthor(author.ID, author.Firstname, author.Secondname)
 	if err != nil {
 		ctx.JSON(http.StatusCreated, gin.H{
 			"response": model.Response{
@@ -72,7 +72,7 @@ func (h Handler) CreateAuthor(ctx *gin.Context) {
 func (h Handler) GetAuthorByID(ctx *gin.Context) {
 	get_id := ctx.Param("id")
 
-	resp, err := h.strg.Author().GetAuthor(ctx, get_id)
+	resp, err := h.strg.Author().GetAuthor(get_id)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"response": model.Response{
@@ -107,7 +107,7 @@ func (h Handler) GetAllAuthor(ctx *gin.Context) {
 		limit = "10"
 	}
 
-	resp, err := h.strg.Author().GetAllAuthor(ctx, offset, limit, search)
+	resp, err := h.strg.Author().GetAllAuthor(offset, limit, search)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"response": model.Response{
@@ -140,7 +140,7 @@ func (h Handler) UpdateAuthor(ctx *gin.Context) {
 		return
 	}
 
-	err := h.strg.Author().UpdateAuthor(ctx, id, updAuthor)
+	err := h.strg.Author().UpdateAuthor(id, updAuthor)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"response": model.Response{
@@ -162,7 +162,7 @@ func (h Handler) UpdateAuthor(ctx *gin.Context) {
 func (h Handler) DeleteAuthor(ctx *gin.Context) {
 	id := ctx.Param("id")
 
-	err := h.strg.Author().DeleteAuthor(ctx, id)
+	err := h.strg.Author().DeleteAuthor(id)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"response": model.Response{

@@ -8,18 +8,20 @@ import (
 )
 
 type Config struct {
-	PORT string
-	HOST string
+	PROJECT_PORT string
+	PROJECT_HOST string
 
-	PGDATABASE string
-	PGUSER     string
-	PGPASSWORD string
-	PGPORT     string
-	PGHOST     string
-	PGSSLMODE  string
+	POSTGRES_DB       string
+	POSTGRES_USER     string
+	POSTGRES_PASSWORD string
+	POSTGRES_PORT     string
+	POSTGRES_HOST     string
+	PGSSLMODE         string
 
 	DEFAULTOFFSET string
 	DEFAULTLIMIT  string
+
+	DOCKER_POSTGRES_CONTAINER_NAME string
 }
 
 func Load() (Config, error) {
@@ -29,18 +31,20 @@ func Load() (Config, error) {
 		return Config{}, err
 	}
 
-	cfg.PORT = cast.ToString(getOrReturnDefaultValue("PORT", "3000"))
-	cfg.HOST = cast.ToString(getOrReturnDefaultValue("HOST", "localhost"))
+	cfg.PROJECT_PORT = cast.ToString(getOrReturnDefaultValue("PROJECT_PORT", "3000"))
+	cfg.PROJECT_HOST = cast.ToString(getOrReturnDefaultValue("PROJECT_HOST", "localhost"))
 
-	cfg.PGDATABASE = cast.ToString(getOrReturnDefaultValue("PGDATABASE", "postgres"))
-	cfg.PGUSER = cast.ToString(getOrReturnDefaultValue("PGUSER", "postgres"))
-	cfg.PGPASSWORD = cast.ToString(getOrReturnDefaultValue("PGPASSWORD", "secret"))
-	cfg.PGPORT = cast.ToString(getOrReturnDefaultValue("PGPORT", "5432"))
-	cfg.PGHOST = cast.ToString(getOrReturnDefaultValue("PGHOST", "localhost"))
+	cfg.POSTGRES_DB = cast.ToString(getOrReturnDefaultValue("POSTGRES_DB", "postgres"))
+	cfg.POSTGRES_USER = cast.ToString(getOrReturnDefaultValue("POSTGRES_USER", "postgres"))
+	cfg.POSTGRES_PASSWORD = cast.ToString(getOrReturnDefaultValue("POSTGRES_PASSWORD", "secret"))
+	cfg.POSTGRES_PORT = cast.ToString(getOrReturnDefaultValue("POSTGRES_PORT", "5432"))
+	cfg.POSTGRES_HOST = cast.ToString(getOrReturnDefaultValue("POSTGRES_HOST", "localhost"))
 	cfg.PGSSLMODE = cast.ToString(getOrReturnDefaultValue("PGSSLMODE", "disable"))
 
 	cfg.DEFAULTLIMIT = cast.ToString(getOrReturnDefaultValue("DEFAULTLIMIT", "10"))
 	cfg.DEFAULTOFFSET = cast.ToString(getOrReturnDefaultValue("DEFAULTOFFSET", "0"))
+
+	cfg.DOCKER_POSTGRES_CONTAINER_NAME = cast.ToString(getOrReturnDefaultValue("DOCKER_POSTGRES_CONTAINER_NAME", "postgres_database"))
 
 	return cfg, nil
 }
