@@ -26,6 +26,114 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/author": {
+            "get": {
+                "description": "get all authors",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "author"
+                ],
+                "summary": "get all authors",
+                "operationId": "get-all-authors",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "offset",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "search",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All authors",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/model.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/model.GetAllAuthor"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/model.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/model.Response"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/model.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/model.Response"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/model.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/model.Response"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "create author",
                 "consumes": [
@@ -113,6 +221,24 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "model.Author": {
+            "type": "object",
+            "required": [
+                "firstname",
+                "secondname"
+            ],
+            "properties": {
+                "firstname": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "secondname": {
+                    "type": "string"
+                }
+            }
+        },
         "model.CreateAuthor": {
             "type": "object",
             "required": [
@@ -125,6 +251,20 @@ const docTemplate = `{
                 },
                 "secondname": {
                     "type": "string"
+                }
+            }
+        },
+        "model.GetAllAuthor": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.Author"
+                    }
+                },
+                "count": {
+                    "type": "integer"
                 }
             }
         },

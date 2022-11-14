@@ -1,5 +1,17 @@
 basePath: /api
 definitions:
+  model.Author:
+    properties:
+      firstname:
+        type: string
+      id:
+        type: string
+      secondname:
+        type: string
+    required:
+    - firstname
+    - secondname
+    type: object
   model.CreateAuthor:
     properties:
       firstname:
@@ -9,6 +21,15 @@ definitions:
     required:
     - firstname
     - secondname
+    type: object
+  model.GetAllAuthor:
+    properties:
+      author:
+        items:
+          $ref: '#/definitions/model.Author'
+        type: array
+      count:
+        type: integer
     type: object
   model.Response:
     properties:
@@ -31,6 +52,66 @@ info:
   version: "1.0"
 paths:
   /author:
+    get:
+      consumes:
+      - application/json
+      description: get all authors
+      operationId: get-all-authors
+      parameters:
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      - description: offset
+        in: query
+        name: offset
+        type: string
+      - description: search
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: All authors
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/model.GetAllAuthor'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                error:
+                  $ref: '#/definitions/model.Response'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                error:
+                  $ref: '#/definitions/model.Response'
+              type: object
+        "500":
+          description: Server Error
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Response'
+            - properties:
+                error:
+                  $ref: '#/definitions/model.Response'
+              type: object
+      summary: get all authors
+      tags:
+      - author
     post:
       consumes:
       - application/json

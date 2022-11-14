@@ -91,10 +91,25 @@ func (h Handler) GetAuthorByID(ctx *gin.Context) {
 	})
 }
 
+// Profession godoc
+// @ID get-all-authors
+// @Router /author [GET]
+// @Summary get all authors
+// @Description get all authors
+// @Tags author
+// @Accept json
+// @Produce json
+// @Param limit query string false "limit"
+// @Param offset query string false "offset"
+// @Param search query string false "search"
+// @Success 200 {object} model.Response{data=model.GetAllAuthor} "All authors"
+// @Response 400 {object} model.Response{error=model.Response} "Bad Request"
+// @Response 404 {object} model.Response{error=model.Response} "Not Found"
+// @Failure 500 {object} model.Response{error=model.Response} "Server Error"
 func (h Handler) GetAllAuthor(ctx *gin.Context) {
 	offset, offset_exists := ctx.GetQuery("offset")
 	if !offset_exists {
-		offset = "10"
+		offset = "0"
 	}
 
 	limit, limit_exists := ctx.GetQuery("limit")
@@ -104,14 +119,14 @@ func (h Handler) GetAllAuthor(ctx *gin.Context) {
 
 	search, search_exists := ctx.GetQuery("search")
 	if !search_exists {
-		limit = "10"
+		search = ""
 	}
 
 	resp, err := h.strg.Author().GetAllAuthor(offset, limit, search)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"response": model.Response{
-				Data:    fmt.Errorf("error occured while getting all authors: %w", err),
+				Data:    err.Error(),
 				Message: "could not get all authors",
 			},
 		})
@@ -121,7 +136,7 @@ func (h Handler) GetAllAuthor(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"response": model.Response{
 			Data:    resp,
-			Message: "got all author",
+			Message: "got all authors",
 		},
 	})
 }

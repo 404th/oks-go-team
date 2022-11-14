@@ -60,20 +60,25 @@ func (rp authorRepo) GetAllAuthor(offset, limit, search string) (*model.GetAllAu
 	)
 
 	if search != "" {
-		filter += " AND name ILIKE '%' || :search || '%' "
+		filter += " AND firstname ILIKE '%' || :search || '%' OR secondname ILIKE '%' || :search || '%' "
 		params["search"] = search
 	}
 
 	countQuery := `SELECT count(1) FROM author WHERE true ` + filter
 
-	err = rp.db.QueryRow(countQuery).Scan(&resp.Count)
+	q, err := rp.db.NamedQuery(countQuery, params)
 	if err != nil {
 		return nil, fmt.Errorf("error while scanning count %w", err)
 	}
 
+	if q.Rows.Next() {
+		q.Rows.Scan(&resp.Count)
+	}
+
 	query := `SELECT
 				id,
-				name
+				firstname,
+				secondname
 			FROM author
 			WHERE true` + filter
 
@@ -81,7 +86,7 @@ func (rp authorRepo) GetAllAuthor(offset, limit, search string) (*model.GetAllAu
 	params["limit"] = limit
 	params["offset"] = offset
 
-	rows, err := rp.db.Query(query, params)
+	rows, err := rp.db.NamedQuery(query, params)
 	if err != nil {
 		return nil, fmt.Errorf("error while getting rows %w", err)
 	}
@@ -106,6 +111,35 @@ func (rp authorRepo) GetAllAuthor(offset, limit, search string) (*model.GetAllAu
 }
 
 func (rp authorRepo) UpdateAuthor(id string, entity model.UpdateAuthor) error {
+	var (
+		exists bool              = false
+		params map[string]string = map[string]string{}
+	)
+
+	query1 := `SELECT EXISTS(SELECT 1 FROM author WHERE id = $1);`
+
+	row1 := rp.db.DB.QueryRow(query1, id)
+	if err := row1.Scan(&exists); err != nil {
+		return err
+	}
+
+	if !exists {
+		return fmt.Errorf("not found author to be updated")
+	}
+
+	// query1 := `UPDATE author SET `
+	if entity.Firstname != "" {
+		params["firstname"] = entity.Firstname
+	}
+
+	if entity.Secondname != "" {
+		params["secondname"] = entity.Secondname
+	}
+
+	// UPDATE weather SET temp_lo = temp_lo+1, temp_hi = temp_lo+15, prcp = DEFAULT
+	// WHERE city = 'San Francisco' AND date = '2003-07-03'
+	// RETURNING temp_lo, temp_hi, prcp;
+
 	return nil
 }
 
