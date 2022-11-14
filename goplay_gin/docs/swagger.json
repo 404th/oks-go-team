@@ -1,0 +1,94 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "BookStore",
+        "title": "Book Store",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "404th",
+            "url": "http://t.me/myevenway",
+            "email": "umarov.doniyor.2002@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "http://localhost:7676",
+    "basePath": "/api",
+    "paths": {
+        "/author": {
+            "post": {
+                "description": "create book",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "author"
+                ],
+                "summary": "create author",
+                "operationId": "create-author",
+                "parameters": [
+                    {
+                        "description": "Create Author",
+                        "name": "CreateAuthor",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.CreateAuthor"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.CreateAuthor": {
+            "type": "object",
+            "required": [
+                "firstname",
+                "secondname"
+            ],
+            "properties": {
+                "firstname": {
+                    "type": "string"
+                },
+                "secondname": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Response": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
+        }
+    }
+}

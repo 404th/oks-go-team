@@ -1,0 +1,63 @@
+basePath: /api
+definitions:
+  model.CreateAuthor:
+    properties:
+      firstname:
+        type: string
+      secondname:
+        type: string
+    required:
+    - firstname
+    - secondname
+    type: object
+  model.Response:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
+host: http://localhost:7676
+info:
+  contact:
+    email: umarov.doniyor.2002@gmail.com
+    name: 404th
+    url: http://t.me/myevenway
+  description: BookStore
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Book Store
+  version: "1.0"
+paths:
+  /author:
+    post:
+      consumes:
+      - application/json
+      description: create book
+      operationId: create-author
+      parameters:
+      - description: Create Author
+        in: body
+        name: CreateAuthor
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateAuthor'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: create author
+      tags:
+      - author
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"
