@@ -76,14 +76,14 @@ func (h Handler) GetAuthorByID(ctx *gin.Context) {
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"response": model.Response{
-				Data:    fmt.Errorf("cannot get an author"),
+				Data:    err.Error(),
 				Message: "error while getting an author",
 			},
 		})
 		return
 	}
 
-	ctx.JSON(http.StatusNotFound, gin.H{
+	ctx.JSON(http.StatusOK, gin.H{
 		"response": model.Response{
 			Data:    resp,
 			Message: "author found",

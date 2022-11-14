@@ -11,7 +11,7 @@ type StorageI interface {
 type AuthorI interface {
 	CreateAuthor(id, firstname, secondname string) (string, error)
 	GetAuthor(id string) (*model.Author, error)
-	GetAllAuthor(offset, limit, search string) (*[]model.Author, error)
+	GetAllAuthor(offset, limit, search string) (*model.GetAllAuthor, error)
 	UpdateAuthor(id string, entity model.UpdateAuthor) error
 	DeleteAuthor(id string) error
 }

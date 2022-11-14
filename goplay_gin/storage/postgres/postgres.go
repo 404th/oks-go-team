@@ -35,5 +35,9 @@ func (pg *postgresRepo) DBClose() error {
 }
 
 func (pr *postgresRepo) Author() storage.AuthorI {
-	return pr.author
+	if pr.author == nil {
+		return pr.author
+	}
+
+	return NewAuthorRepo(pr.db)
 }
