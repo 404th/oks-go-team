@@ -27,7 +27,7 @@ const docTemplate = `{
     "paths": {
         "/author": {
             "post": {
-                "description": "create book",
+                "description": "create author",
                 "consumes": [
                     "application/json"
                 ],
@@ -59,6 +59,51 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/author/{id}": {
+            "get": {
+                "description": "get an author",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "author"
+                ],
+                "summary": "get an author",
+                "operationId": "get-an-author",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Get an author",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/model.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
                         "schema": {
                             "$ref": "#/definitions/model.Response"
                         }

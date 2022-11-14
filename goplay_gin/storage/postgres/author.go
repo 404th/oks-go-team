@@ -35,8 +35,20 @@ func (rp authorRepo) CreateAuthor(ctx context.Context, id, firstname, secondname
 	return created_id, nil
 }
 
-func (rp authorRepo) GetAuthor(ctx context.Context, id string) (*model.Author, error) {
-	return nil, nil
+func (rp authorRepo) GetAuthor(id string) (*model.Author, error) {
+	var author model.Author
+	query := `SELECT (
+			id,
+			firsname,
+			secondname
+		) FROM author WHERE id = $1;`
+
+	row := rp.db.QueryRow(query, id)
+	if err := row.Scan(&author); err != nil {
+		return nil, err
+	}
+
+	return &author, nil
 }
 
 func (rp authorRepo) GetAllAuthor(ctx context.Context, offset, limit, search string) (*[]model.Author, error) {

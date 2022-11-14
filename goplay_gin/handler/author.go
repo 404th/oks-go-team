@@ -13,7 +13,7 @@ import (
 // @ID create-author
 // @Router /author [POST]
 // @Summary create author
-// @Description create book
+// @Description create author
 // @Tags author
 // @Accept json
 // @Produce json
@@ -57,6 +57,18 @@ func (h Handler) CreateAuthor(ctx *gin.Context) {
 	})
 }
 
+// Author godoc
+// @ID get-an-author
+// @Router /author/{id} [GET]
+// @Summary get an author
+// @Description get an author
+// @Tags author
+// @Accept json
+// @Produce json
+// @Param id path string true "Get an author"
+// @Success 200 {object} model.Response "OK"
+// @Response 400 {object} model.Response "Bad Request"
+// @Response 404 {object} model.Response "Not found"
 func (h Handler) GetAuthorByID(ctx *gin.Context) {
 	get_id := ctx.Param("id")
 
@@ -65,9 +77,10 @@ func (h Handler) GetAuthorByID(ctx *gin.Context) {
 		ctx.JSON(http.StatusNotFound, gin.H{
 			"response": model.Response{
 				Data:    fmt.Errorf("cannot get an author"),
-				Message: "author not found",
+				Message: "error while getting an author",
 			},
 		})
+		return
 	}
 
 	ctx.JSON(http.StatusNotFound, gin.H{

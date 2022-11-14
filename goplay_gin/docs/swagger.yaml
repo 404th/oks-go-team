@@ -34,7 +34,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: create book
+      description: create author
       operationId: create-author
       parameters:
       - description: Create Author
@@ -55,6 +55,36 @@ paths:
           schema:
             $ref: '#/definitions/model.Response'
       summary: create author
+      tags:
+      - author
+  /author/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get an author
+      operationId: get-an-author
+      parameters:
+      - description: Get an author
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.Response'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/model.Response'
+      summary: get an author
       tags:
       - author
 securityDefinitions:
