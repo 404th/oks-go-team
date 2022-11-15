@@ -1,0 +1,4 @@
+.idea
+.env
+./DB_Store
+./vendor
