@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"fmt"
+
 	"github.com/404th/todo/model"
 	"github.com/jmoiron/sqlx"
 )
@@ -15,6 +17,14 @@ func NewAuthRepo(db *sqlx.DB) *AuthRepo {
 	}
 }
 
-func (ar AuthRepo) CreateUser(model.User) (int, error) {
-	return 0, nil
+func (ar AuthRepo) CreateUser(user model.User) (int, error) {
+	var id int
+
+	query := fmt.Sprintf(`INSERT INTO %s (name, username, password_hash) RETURNING id`, usersTable)
+	row := ar.db.QueryRow(query, user.Name, user.Username, user.Password)
+	if err := row.Scan(&id); err != nil {
+		return 0, err
+	}
+
+	return id, nil
 }

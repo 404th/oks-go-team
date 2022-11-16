@@ -25,9 +25,9 @@ func (ar AuthService) CreateUser(user model.User) (int, error) {
 	return ar.repo.CreateUser(user)
 }
 
+// helper func --> password hasher
 func generateHashPassword(password string) string {
 	hash := sha1.New()
 	hash.Write([]byte(password))
-
 	return fmt.Sprintf("%x", hash.Sum([]byte(salt)))
 }
