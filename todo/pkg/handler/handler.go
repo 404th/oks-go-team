@@ -20,7 +20,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	// auth
 	r.POST("/auth/sign-up", h.signUp)
-	r.POST("/auth/sign-in", h.signIn)
+	r.GET("/auth/sign-in", h.signIn)
 
 	// lists
 	r.GET("/api/lists", h.getAllLists)

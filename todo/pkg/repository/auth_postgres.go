@@ -28,3 +28,15 @@ func (ar AuthRepo) CreateUser(user model.User) (int, error) {
 
 	return id, nil
 }
+
+func (ar AuthRepo) GetUser(username, password_hash string) (*model.User, error) {
+	var user model.User
+
+	query := fmt.Sprintf("SELECT id FROM %s WHERE username=$1 AND password_hash=$2", usersTable)
+	row := ar.db.QueryRow(query, username, password_hash)
+	if err := row.Scan(&user.Id); err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+}
