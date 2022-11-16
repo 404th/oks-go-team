@@ -20,13 +20,13 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	// auth
 	r.POST("/auth/sign-up", h.signUp)
-	r.GET("/auth/sign-in", h.signIn)
+	r.POST("/auth/sign-in", h.signIn)
 
-	api := r.Group("/api", h.userIdentity)
+	api := r.Group("/api", h.userIdentity) // AUTHORIZATION MIDDLEWARE
 	{
 		// lists
-		api.GET("/lists", h.getAllLists)
 		api.POST("/lists", h.createList)
+		api.GET("/lists", h.getAllLists)
 		api.GET("/lists/:id", h.getListById)
 		api.PUT("/lists/:id", h.updateList)
 		api.DELETE("/lists/:id", h.deleteList)

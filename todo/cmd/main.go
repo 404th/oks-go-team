@@ -38,6 +38,7 @@ func main() {
 	if err != nil {
 		logrus.Fatalf("cannot connect to database %s", err.Error())
 	}
+	defer db.Close()
 
 	repository := repository.NewRepository(db)
 	service := service.NewService(repository)

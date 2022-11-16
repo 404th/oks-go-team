@@ -11,7 +11,9 @@ type Authorization interface {
 	ParseToken(accessToken string) (int, error)
 }
 
-type TodoList interface{}
+type TodoList interface {
+	CreateList(userId int, todoList model.TodoList) (int, error)
+}
 
 type TodoItem interface{}
 
@@ -21,8 +23,9 @@ type Service struct {
 	TodoItem
 }
 
-func NewService(repo *repository.Repository) *Service {
+func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		Authorization: NewAuthService(repo),
+		Authorization: NewAuthService(repos.Authorization),
+		TodoList:      NewTodoListService(repos.TodoList),
 	}
 }

@@ -37,6 +37,7 @@ func (ar AuthService) CreateUser(user model.User) (int, error) {
 	return ar.repo.CreateUser(user)
 }
 
+// parsing token and get data
 func (ar AuthService) ParseToken(accessToken string) (int, error) {
 	token, err := jwt.ParseWithClaims(accessToken, &tokenClaims{}, func(a *jwt.Token) (interface{}, error) {
 		if _, ok := a.Method.(*jwt.SigningMethodHMAC); !ok {
