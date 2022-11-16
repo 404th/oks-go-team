@@ -25,18 +25,18 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	api := r.Group("/api", h.userIdentity)
 	{
 		// lists
-		api.GET("/api/lists", h.getAllLists)
-		api.POST("/api/lists", h.createList)
-		api.GET("/api/lists/:id", h.getListById)
-		api.PUT("/api/lists/:id", h.updateList)
-		api.DELETE("/api/lists/:id", h.deleteList)
+		api.GET("/lists", h.getAllLists)
+		api.POST("/lists", h.createList)
+		api.GET("/lists/:id", h.getListById)
+		api.PUT("/lists/:id", h.updateList)
+		api.DELETE("/lists/:id", h.deleteList)
 
 		// items
-		api.GET("/api/lists/:id/items", h.getAllItems)
-		api.POST("/api/lists/:id/items", h.createItem)
-		api.GET("/api/lists/:id/items/:item_id", h.getItemById)
-		api.PUT("/api/lists/:id/items/:item_id", h.updateItem)
-		api.DELETE("/api/lists/:id/items/:item_id", h.deleteItem)
+		api.GET("/lists/:id/items", h.getAllItems)
+		api.POST("/lists/:id/items", h.createItem)
+		api.GET("/lists/:id/items/:item_id", h.getItemById)
+		api.PUT("/lists/:id/items/:item_id", h.updateItem)
+		api.DELETE("/lists/:id/items/:item_id", h.deleteItem)
 	}
 
 	return r
