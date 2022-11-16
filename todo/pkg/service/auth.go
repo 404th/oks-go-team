@@ -2,6 +2,7 @@ package service
 
 import (
 	"crypto/sha1"
+	"errors"
 	"fmt"
 	"time"
 
@@ -34,6 +35,26 @@ func NewAuthService(repo repository.Authorization) *AuthService {
 func (ar AuthService) CreateUser(user model.User) (int, error) {
 	user.Password = generateHashPassword(user.Password)
 	return ar.repo.CreateUser(user)
+}
+
+func (ar AuthService) ParseToken(accessToken string) (int, error) {
+	token, err := jwt.ParseWithClaims(accessToken, &tokenClaims{}, func(a *jwt.Token) (interface{}, error) {
+		if _, ok := a.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("invalid signing method")
+		}
+
+		return []byte(signingKey), nil
+	})
+	if err != nil {
+		return 0, err
+	}
+
+	claims, ok := token.Claims.(*tokenClaims)
+	if !ok {
+		return 0, errors.New("token claims are not type *tokenClaims")
+	}
+
+	return claims.UserId, nil
 }
 
 // token generator for sign in method
