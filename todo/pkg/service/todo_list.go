@@ -1,8 +1,6 @@
 package service
 
 import (
-	"fmt"
-
 	"github.com/404th/todo/model"
 	"github.com/404th/todo/pkg/repository"
 )
@@ -18,14 +16,13 @@ func NewTodoListService(repo repository.TodoList) *TodoListService {
 }
 
 func (ts *TodoListService) CreateList(userId int, todoList model.TodoList) (int, error) {
-	fmt.Println("++++++++++++++++")
-	fmt.Println(userId)
-	fmt.Println("++++++++++++++++")
-
-	fmt.Println("++++++++++++++++")
-	fmt.Println("++++++++++++++++")
-	fmt.Println(todoList)
-	fmt.Println("++++++++++++++++")
-
 	return ts.repo.CreateList(userId, todoList)
+}
+
+func (ts *TodoListService) GetAll(userId int) ([]model.TodoList, error) {
+	return ts.repo.GetAll(userId)
+}
+
+func (ts *TodoListService) GetListById(userId, id int) (model.TodoList, error) {
+	return ts.repo.GetListById(userId, id)
 }
