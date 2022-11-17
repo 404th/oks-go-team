@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/404th/todo/model"
@@ -69,4 +70,24 @@ func (tl *TodoListRepo) GetListById(userId, id int) (model.TodoList, error) {
 	}
 
 	return todoList, nil
+}
+
+func (tl *TodoListRepo) Delete(userId, listId int) error {
+	query := fmt.Sprintf(`DELETE FROM %s AS tl USING %s AS ul WHERE tl.id = ul.list_id AND ul.user_id = $1 AND ul.list_id = $2`, todoListsTable, usersListsTable)
+
+	resp, err := tl.db.Exec(query, userId, listId)
+	if err != nil {
+		return nil
+	}
+
+	num, err := resp.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if num < 1 {
+		return errors.New("todolist not found")
+	}
+
+	return nil
 }
