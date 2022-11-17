@@ -59,4 +59,4 @@ func initConfig() error {
 	return viper.ReadInConfig()
 }
 
-// hello from jahongir
+// Hello from Doniyor
