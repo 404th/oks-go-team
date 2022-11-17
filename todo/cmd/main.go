@@ -27,6 +27,7 @@ func main() {
 		logrus.Fatalf("error while initializing global env: %s", err.Error())
 	}
 
+	// getting new database
 	db, err := repository.NewPostgres(repository.Config{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
@@ -58,6 +59,3 @@ func initConfig() error {
 
 	return viper.ReadInConfig()
 }
-
-// Hello from Doniyor
-// salommmm
