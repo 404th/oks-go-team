@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/404th/todo/model"
@@ -21,14 +20,6 @@ func (h *Handler) createList(c *gin.Context) {
 		return
 	}
 
-	fmt.Println("++++++++++++++++")
-	fmt.Println(userId)
-	fmt.Println("++++++++++++++++")
-
-	fmt.Println("++++++++++++++++")
-	fmt.Println(todolist)
-	fmt.Println("++++++++++++++++")
-
 	todolist_id, err := h.service.CreateList(userId, todolist)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
@@ -40,7 +31,15 @@ func (h *Handler) createList(c *gin.Context) {
 	})
 }
 
-func (h *Handler) getAllLists(c *gin.Context) {}
+func (h *Handler) getAllLists(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	h.service.TodoList.GetList()
+}
 
 func (h *Handler) getListById(c *gin.Context) {}
 
