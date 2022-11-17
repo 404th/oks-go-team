@@ -60,3 +60,4 @@ func initConfig() error {
 }
 
 // Hello from Doniyor
+//salommmm
