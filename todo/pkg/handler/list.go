@@ -79,6 +79,7 @@ func (h *Handler) getListById(c *gin.Context) {
 func (h *Handler) updateList(c *gin.Context) {
 
 	fmt.Println("Hello")
+	fmt.Println("Hello")
 }
 
 func (h *Handler) deleteList(c *gin.Context) {}
