@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/404th/todo/model"
 	"github.com/gin-gonic/gin"
@@ -38,10 +39,41 @@ func (h *Handler) getAllLists(c *gin.Context) {
 		return
 	}
 
-	h.service.TodoList.GetList()
+	resp, err := h.service.TodoList.GetAll(userId)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"users_lists": resp,
+	})
 }
 
-func (h *Handler) getListById(c *gin.Context) {}
+func (h *Handler) getListById(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusUnauthorized, err.Error())
+		return
+	}
+
+	str_id := c.Param("id")
+	id, err := strconv.Atoi(str_id)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp, err := h.service.TodoList.GetListById(userId, id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"todo_list": resp,
+	})
+}
 
 func (h *Handler) updateList(c *gin.Context) {}
 

@@ -47,3 +47,25 @@ func (tl *TodoListRepo) CreateList(userId int, todoList model.TodoList) (int, er
 
 	return userslistsid, tx.Commit()
 }
+
+func (tl *TodoListRepo) GetAll(userId int) ([]model.TodoList, error) {
+	var todolistslice []model.TodoList
+
+	query := fmt.Sprintf(`SELECT tl.id, tl.title, tl.description FROM %s tl INNER JOIN %s ul ON tl.id = ul.list_id WHERE ul.user_id = $1`, todoListsTable, usersListsTable)
+	if err := tl.db.Select(&todolistslice, query, userId); err != nil {
+		return todolistslice, err
+	}
+
+	return todolistslice, nil
+}
+
+func (tl *TodoListRepo) GetListById(userId, id int) (model.TodoList, error) {
+	var todoList model.TodoList
+
+	query := fmt.Sprintf("SELECT * FROM %s tl INNER JOIN %s ul ON tl.id = ul.list_id WHERE ul.id = $1 AND ul.user_id = $2", todoListsTable, usersListsTable)
+	if err := tl.db.Get(&todoList, query, id, userId); err != nil {
+		return todoList, err
+	}
+
+	return todoList, nil
+}
