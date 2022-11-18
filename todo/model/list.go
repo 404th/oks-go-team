@@ -14,13 +14,6 @@ type UsersList struct {
 	ListId int `json:"list_id" db:"list_id" binding:"required"`
 }
 
-type TodoItem struct {
-	Id          int    `json:"id" db:"id"`
-	Title       string `json:"title" db:"title" binding:"required"`
-	Description string `json:"description" db:"description"`
-	Done        bool   `json:"done" db:"done"`
-}
-
 type ListsItem struct {
 	Id     int
 	ListId int
