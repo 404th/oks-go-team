@@ -1,7 +1,10 @@
 package main
 
 import (
+	"context"
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/404th/todo/pkg/handler"
 	"github.com/404th/todo/pkg/repository"
@@ -47,8 +50,26 @@ func main() {
 
 	srv := new(server.Server)
 
-	if err := srv.Run(viper.GetString("port"), handler.InitRoutes()); err != nil {
-		logrus.Fatalf("error performed while starting server: %v", err)
+	go func() {
+		if err := srv.Run(viper.GetString("port"), handler.InitRoutes()); err != nil {
+			logrus.Fatalf("error performed while starting server: %v", err)
+		}
+	}()
+
+	logrus.Println("Server started...")
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+	<-quit
+
+	logrus.Println("Server is shutting down...")
+
+	if err := srv.Close(context.Background()); err != nil {
+		logrus.Printf("error occured while shutting down server: %s", err.Error())
+	}
+
+	if err := db.Close(); err != nil {
+		logrus.Printf("error occured while closing database: %s", err.Error())
 	}
 }
 
